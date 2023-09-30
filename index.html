@@ -15,10 +15,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -27,9 +23,20 @@
       <div class="container-fluid">
         <div class="row justify-content-between">
           <div class="col-lg-4 col-sm-4 col-xs-12 text-center">
-            <div class="inner">
-              <h2>Player 1</h2>
-              <img src="assets/naruto.gif" />
+            <div class="flexbox playerOne">
+              <div data-character="tanjiro" data-src="assets/tanjiro.gif">
+                <img src="assets/tanjiro.gif" alt="" />
+              </div>
+              <div data-character="nezuko" data-src="assets/nezuko.gif">
+                <img src="assets/nezuko.gif" alt="" />
+              </div>
+              <div data-character="inosuke" data-src="assets/inosuke.gif">
+                <img src="assets/inosuke.gif" alt="" />
+              </div>
+              <div data-character="zenitsu" data-src="assets/zenitsu.gif">
+                <img src="assets/zenitsu.gif" alt="" />
+              </div>
+              <!-- <img src="assets/naruto.gif" />
               <div class="mini-form">
                 <input class="player1_name" placeholder="Name" value="naruto" />
                 <input
@@ -38,7 +45,7 @@
                   placeholder="Marker (one letter)"
                   value="x"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -49,17 +56,18 @@
           </div>
 
           <div class="col-lg-4 col-sm-4 col-xs-12 text-center">
-            <div class="inner">
-              <h2>Player 2</h2>
-              <img src="assets/sasuke.gif" />
-              <div class="mini-form">
-                <input class="player2_name" placeholder="Name" value="sasuke" />
-                <input
-                  class="player2_marker"
-                  maxlength="1"
-                  value="o"
-                  placeholder="Marker (one letter)"
-                />
+            <div class="flexbox playerTwo">
+              <div data-character="harry" data-src="assets/harry.png">
+                <img src="assets/harry.png" alt="" />
+              </div>
+              <div data-character="ron" data-src="assets/ron.gif">
+                <img src="assets/ron.gif" alt="" />
+              </div>
+              <div data-character="hermione" data-src="assets/hermione.png">
+                <img src="assets/hermione.png" alt="" />
+              </div>
+              <div data-character="malfoy" data-src="assets/malfoy.gif">
+                <img src="assets/malfoy.gif" alt="" />
               </div>
             </div>
           </div>
@@ -70,7 +78,6 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-sm-12 text-center">
-            <h1>Tic Tac Toe</h1>
             <div class="inner">
               <!-- <div class="btns_top">
                 <button class="default_btn marker1 mr-5 selected disable">
@@ -79,6 +86,7 @@
                 <button class="default_btn marker2 disable">o</button>
               </div> -->
               <div class="grid">
+                <button class="singleGrid" data-id="0"></button>
                 <button class="singleGrid" data-id="1"></button>
                 <button class="singleGrid" data-id="2"></button>
                 <button class="singleGrid" data-id="3"></button>
@@ -87,16 +95,14 @@
                 <button class="singleGrid" data-id="6"></button>
                 <button class="singleGrid" data-id="7"></button>
                 <button class="singleGrid" data-id="8"></button>
-                <button class="singleGrid" data-id="9"></button>
               </div>
 
-              <div class="btns">
+              <div class="btns d-none">
                 <button class="default_btn reset">Reset</button>
               </div>
             </div>
             <div class="winner d-none">
               <h1></h1>
-              <img src="assets/winner.gif" />
               <button class="default_btn inverted replay mt-5">Replay</button>
             </div>
           </div>

@@ -14,6 +14,9 @@ const winnerDiv = document.querySelector(".winner");
 const winnerTitle = document.querySelector(".winner h1");
 const inner = document.querySelector(".tic .inner");
 const replayBtn = document.querySelector(".replay");
+const playerOneDiv = document.querySelector(".playerOne");
+const playerTwoDiv = document.querySelector(".playerTwo");
+let gameOver = false;
 const winningCombo = [
   [0, 1, 2],
   [0, 4, 8],
@@ -25,6 +28,7 @@ const winningCombo = [
   [6, 7, 8],
 ];
 let gameBoard = [];
+
 let player1,
   player2,
   currentPlayer,
@@ -32,31 +36,71 @@ let player1,
 
 grid.addEventListener("click", (e) => {
   let el = e.target;
-  if (!el.classList.contains("singleGrid") || el.classList.contains("marked"))
+
+  if (
+    !el.classList.contains("singleGrid") ||
+    el.classList.contains("marked") ||
+    gameOver
+  )
     return;
-  el.textContent = currentPlayer.marker;
+  el.style.backgroundImage = `url('${currentPlayer.marker}')`;
+  el.classList.add("marked");
   let id = el.getAttribute("data-id");
-  gameBoard[id - 1] = currentPlayer.marker;
+  gameBoard[id] = currentPlayer.name;
   checkWinner();
   switchPlayer();
 });
 
 replayBtn.addEventListener("click", replay);
-startBtn.addEventListener("click", verifyInfo);
 resetBtn.addEventListener("click", reset);
+startBtn.addEventListener("click", initPlayers);
+
+function initPlayers() {
+  let initPlayer1 = document.querySelector(".playerOne .selected");
+  let initPlayer2 = document.querySelector(".playerTwo .selected");
+
+  if (!initPlayer1 || !initPlayer2) return;
+
+  player1 = new Player(
+    initPlayer1.getAttribute("data-character"),
+    initPlayer1.getAttribute("data-src")
+  );
+
+  player2 = new Player(
+    initPlayer2.getAttribute("data-character"),
+    initPlayer2.getAttribute("data-src")
+  );
+
+  currentPlayer = player1;
+  intro.classList.add("d-none");
+  tic.classList.remove("d-none");
+}
+
+playerOneDiv.addEventListener("click", function (e) {
+  let el = e.target;
+  document.querySelectorAll(".playerOne div").forEach((div) => {
+    div.classList.remove("selected");
+  });
+  el.closest("div").classList.add("selected");
+});
+
+playerTwoDiv.addEventListener("click", function (e) {
+  let el = e.target;
+  document.querySelectorAll(".playerTwo div").forEach((div) => {
+    div.classList.remove("selected");
+  });
+  el.closest("div").classList.add("selected");
+});
 
 function checkWinner() {
-  singleGrid.forEach(el, () => {
-    if (el.textContent === "") return;
-  });
-
   for (let i = 0; i < winningCombo.length; i++) {
     if (
-      gameBoard[winningCombo[i][0]] === currentPlayer.marker &&
-      gameBoard[winningCombo[i][1]] === currentPlayer.marker &&
-      gameBoard[winningCombo[i][2]] === currentPlayer.marker
+      gameBoard[winningCombo[i][0]] === currentPlayer.name &&
+      gameBoard[winningCombo[i][1]] === currentPlayer.name &&
+      gameBoard[winningCombo[i][2]] === currentPlayer.name
     ) {
       winner = currentPlayer;
+      gameOver = true;
       displayWinner();
     }
   }
@@ -68,10 +112,11 @@ function switchPlayer() {
 }
 
 function reset() {
+  gameOver = false;
   currentPlayer = player1;
   gameBoard = [];
   singleGrid.forEach((el) => {
-    el.textContent = "";
+    el.style.backgroundImage = "";
     el.classList.remove("marked");
   });
 }
@@ -82,34 +127,15 @@ function replay() {
   inner.classList.remove("d-none");
 }
 
-function verifyInfo() {
-  if (
-    player1_marker.value &&
-    player1_name.value &&
-    player2_name.value &&
-    player2_marker.value &&
-    player1_name.value !== player2_name.value &&
-    player1_marker.value !== player2_marker.value
-  ) {
-    player1 = new Player(player1_name.value, player1_marker.value);
-    player2 = new Player(player2_name.value, player2_marker.value);
-    currentPlayer = player1;
-    tic.classList.remove("d-none");
-    intro.classList.add("d-none");
-  } else {
-    alert("Names & markers must be unique");
-  }
-}
-
 function displayWinner() {
-  winnerTitle.textContent = winner.name;
-  inner.classList.add("d-none");
+  winnerTitle.textContent = `The winner is : ${winner.name}`;
   winnerDiv.classList.remove("d-none");
 }
 
 class Player {
-  constructor(name, marker) {
+  constructor(name, marker, wins = 0) {
     this.name = name;
     this.marker = marker;
+    this.wins = wins;
   }
 }
