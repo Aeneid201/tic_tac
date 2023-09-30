@@ -1,17 +1,13 @@
 "use strict";
 
 const startBtn = document.querySelector(".start");
-const player1_name = document.querySelector(".player1_name");
-const player1_marker = document.querySelector(".player1_marker");
-const player2_name = document.querySelector(".player2_name");
-const player2_marker = document.querySelector(".player2_marker");
 const tic = document.querySelector(".tic");
 const intro = document.querySelector(".intro");
 const grid = document.querySelector(".grid");
 const singleGrid = document.querySelectorAll(".singleGrid");
 const resetBtn = document.querySelector(".reset");
-const winnerDiv = document.querySelector(".winner");
-const winnerTitle = document.querySelector(".winner h1");
+const msg = document.querySelector(".msg");
+const msgTitle = document.querySelector(".msg h1");
 const inner = document.querySelector(".tic .inner");
 const replayBtn = document.querySelector(".replay");
 const playerOneDiv = document.querySelector(".playerOne");
@@ -93,6 +89,12 @@ playerTwoDiv.addEventListener("click", function (e) {
 });
 
 function checkWinner() {
+  if (isTie()) {
+    displayTie();
+    gameOver = true;
+    return;
+  }
+
   for (let i = 0; i < winningCombo.length; i++) {
     if (
       gameBoard[winningCombo[i][0]] === currentPlayer.name &&
@@ -123,19 +125,28 @@ function reset() {
 
 function replay() {
   reset();
-  winnerDiv.classList.add("d-none");
+  msg.classList.add("d-none");
   inner.classList.remove("d-none");
 }
 
 function displayWinner() {
-  winnerTitle.textContent = `The winner is : ${winner.name}`;
-  winnerDiv.classList.remove("d-none");
+  msgTitle.textContent = `The winner is : ${winner.name}`;
+  msg.classList.remove("d-none");
+}
+
+function displayTie() {
+  msgTitle.textContent = `It's a tie! Play again`;
+  msg.classList.remove("d-none");
+}
+
+function isTie() {
+  let arr = [...singleGrid];
+  return arr.every((el) => el.style.backgroundImage !== "");
 }
 
 class Player {
-  constructor(name, marker, wins = 0) {
+  constructor(name, marker) {
     this.name = name;
     this.marker = marker;
-    this.wins = wins;
   }
 }
